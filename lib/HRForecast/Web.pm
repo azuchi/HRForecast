@@ -492,7 +492,7 @@ get '/csv/:service_name/:section_name/:graph_name' => [qw/get_metrics/] => sub {
     );
     my $csv = sprintf("Date,/%s/%s/%s\n",$c->stash->{metrics}->{service_name},$c->stash->{metrics}->{section_name},$c->stash->{metrics}->{graph_name});
     foreach my $row ( @$rows ) {
-        $csv .= sprintf "%s,%d\n", $row->{datetime}->strftime('%Y/%m/%d %T'), $row->{number}
+        $csv .= sprintf "%s,%f\n", $row->{datetime}->strftime('%Y/%m/%d %T'), $row->{number}
     }
     if ( $result->valid('d') ) {
         $c->res->header('Content-Disposition',
@@ -567,8 +567,8 @@ post '/api/:service_name/:section_name/:graph_name' => sub {
     my $result = $c->req->validator([
         'number' => {
             rule => [
-                ['NOT_NULL','number is null'],
-                ['INT','number is not null']
+                ['NOT_NULL','number is null']
+#                ['INT','number is not null']
             ],
         },
         'datetime' => {
