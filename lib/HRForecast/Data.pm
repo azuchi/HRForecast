@@ -115,10 +115,9 @@ sub update {
     }
     $dbh->commit;
 
-    my $fixed_timestamp = $timestamp - ($timestamp % 3600);
     $dbh->query(
         'REPLACE data SET metrics_id = ?, datetime = ?, number = ?',
-        $metrics->{id}, localtime($fixed_timestamp)->mysql_datetime, $number
+        $metrics->{id}, localtime($timestamp)->mysql_datetime, $number
     );
 
     1;
